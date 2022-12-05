@@ -1,4 +1,4 @@
-"""Hyper-params for model"""
+"""Hyper-params for models"""
 import torch
 
 #DEVICE
@@ -15,6 +15,6 @@ ROOT_GT = "detection/rtsd-d3-gt"
 SAVE_MODEL_ROOT = "Traffic_sign_detection_pytorch/output/train/models"
 SAVE_PLOTS_ROOT = "Traffic_sign_detection_pytorch/output/train/plots"
 
-#save model after every n epochs
+#save models after every n epochs
 EPOCHS_SAVE_MODEL = 2
 EPOCHS_SAVE_PLOTS = 4

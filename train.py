@@ -29,7 +29,7 @@ def train(train_loader, model):
         targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
         # Casts operations to mixed precision
         # with torch.amp.autocast(device_type='cpu', dtype=torch.bfloat16):
-        #     loss_dict = model(images, targets)
+        #     loss_dict = models(images, targets)
         loss_dict = model(images, targets)
         losses = sum(loss for loss in loss_dict.values())
         loss_value = losses.item()
@@ -79,10 +79,10 @@ def validate(valid_data_loader, model):
 
 
 if __name__ == '__main__':
-    # initialize the model and move to the device
+    # initialize the models and move to the device
     model = create_model(num_classes=NUM_CLASSES, six_class_detection=True)
     model = model.to(DEVICE)
-    # get the model parameters
+    # get the models parameters
     params = [p for p in model.parameters() if p.requires_grad]
     # define the OPTIMIZER
     optimizer = torch.optim.SGD(params, lr=0.001, momentum=0.9, weight_decay=0.0005)
@@ -91,11 +91,11 @@ if __name__ == '__main__':
     val_loss_hist = Averager()
     train_itr = 1
     val_itr = 1
-    # train and validation loss lists to store loss values and plot graphs for all iterations
+    # train and validation loss lists to store loss values and plots graphs for all iterations
     train_loss_list = []
     val_loss_list = []
-    # name to save the trained model with
-    MODEL_NAME = 'model'
+    # name to save the trained models with
+    MODEL_NAME = 'models'
     # start the training epochs
     for epoch in range(NUM_EPOCHS):
         print(f"\nEPOCH [{epoch + 1} / {NUM_EPOCHS}]")
@@ -112,7 +112,7 @@ if __name__ == '__main__':
         print(f"Train loss: {train_loss_hist.value:.3f} \n Validation loss: {val_loss_hist.value:.3f}")
         end = time.time()
         print(f"Took {((end - start) / 60):.2f} minutes")
-        if (epoch + 1) % EPOCHS_SAVE_MODEL == 0:  # save model after every n epochs
+        if (epoch + 1) % EPOCHS_SAVE_MODEL == 0:  # save models after every n epochs
             torch.save(model.state_dict(), f"{SAVE_MODEL_ROOT}/detection_model{epoch + 1}.pth")
             print("MODEL SAVED...")
 
@@ -127,7 +127,7 @@ if __name__ == '__main__':
             fig_2.savefig(f"{SAVE_PLOTS_ROOT}/valid_loss_{epoch + 1}.png")
             print("PLOTS SAVED...")
 
-        if (epoch + 1) == NUM_EPOCHS:  # save loss plots and model once at the end
+        if (epoch + 1) == NUM_EPOCHS:  # save loss plots and models once at the end
             train_ax.plot(train_loss, color='blue')
             train_ax.set_xlabel('iterations')
             train_ax.set_ylabel('train loss')
@@ -136,6 +136,6 @@ if __name__ == '__main__':
             valid_ax.set_ylabel('validation loss')
             fig_1.savefig(f"{SAVE_PLOTS_ROOT}/train_loss_{epoch + 1}.png")
             fig_2.savefig(f"{SAVE_PLOTS_ROOT}/valid_loss_{epoch + 1}.png")
-            torch.save(model.state_dict(), f"{SAVE_MODEL_ROOT}/model{epoch + 1}.pth")
+            torch.save(model.state_dict(), f"{SAVE_MODEL_ROOT}/models{epoch + 1}.pth")
 
         plt.close('all')

@@ -85,12 +85,12 @@ class RTSD_by_groups(Dataset):
 
         #print(f'в итоге после прогона по {n} классу: \n boxes = {boxes}\nlabels = {labels}')
 
-        if len(labels) == 0:
+        if len(labels) == 1:
             area = torch.zeros(1)
             boxes = torch.zeros((0, 4), dtype=torch.float32)
             labels.append(0)
             iscrowd = torch.ones(1).to(torch.int64)
-        elif len(labels) == 1:
+        elif len(labels) == 2:
             area = torch.as_tensor([(boxes[0][3] - boxes[0][1]) * (boxes[0][2] - boxes[0][0])], dtype=torch.float32)
             boxes = torch.as_tensor(boxes, dtype=torch.float32)
             iscrowd = torch.zeros((len(labels),), dtype=torch.int64)

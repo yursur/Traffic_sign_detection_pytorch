@@ -43,7 +43,7 @@ for i in range(len(test_images)):
         # boxes = boxes[scores >= DETECTION_THRESHOLD].astype(np.int32)
         draw_boxes = boxes.copy()
         # get all the predicited class names
-        pred_classes = [CLASSES[i] for i in outputs[0]['labels'].cpu().numpy()]
+        pred_classes = [CLASSES[i+1] for i in outputs[0]['labels'].cpu().numpy()]
 
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):

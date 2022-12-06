@@ -26,7 +26,7 @@ class Averager:
         self.current_total = 0.0
         self.iterations = 0.0
 
-def show_img_with_bb(img, bb, width=5):
+def show_img_with_bb(img, bb, labels, width=5):
     """Draw image (PIL or Tensor) with all bounding boxes"""
     PIL_to_tensor = T.PILToTensor()
     Tensor_to_PIL = T.ToPILImage()
@@ -35,7 +35,7 @@ def show_img_with_bb(img, bb, width=5):
     else: img_tensor = img.to(torch.uint8)
     # May be no one box on the picture
     try:
-        img_tensor = draw_bounding_boxes(img_tensor, bb, colors='red', width=width)
+        img_tensor = draw_bounding_boxes(img_tensor, bb, labels=labels ,colors='red', width=width)
     except UserWarning:
         pass
     img_pil = Tensor_to_PIL(img_tensor)

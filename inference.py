@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import cv2
 from models import create_model
-from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, TEST_IMAGE_ROOT, DETECTION_THRESHOLD
+from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, TEST_IMAGE_ROOT, DETECTION_THRESHOLD, SAVE_IMAGE_TEST
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 
@@ -56,8 +56,8 @@ for i in range(len(test_images)):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0),
                         2, lineType=cv2.LINE_AA)
         cv2.imshow('Prediction', orig_image)
-        cv2.waitKey(0)
-        cv2.imwrite(f"../test_predictions/{image_name}.jpg", orig_image, )
+        cv2.waitKey(1)
+        cv2.imwrite(f"{SAVE_IMAGE_TEST}/{image_name}.jpg", orig_image, )
     print(f"Image {i + 1} done...")
     print('-' * 50)
 print('TEST PREDICTIONS COMPLETE')

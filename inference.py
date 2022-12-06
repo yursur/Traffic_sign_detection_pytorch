@@ -25,7 +25,7 @@ for i in range(len(test_images)):
     # make the pixel range between 0 and 1
     image /= 255.0
     # bring color channels to front
-    image = np.transpose(image, (2, 0, 1)).astype(np.float)
+    image = np.transpose(image, (2, 0, 1)).astype(np.float64)
     # convert to tensor
     image = torch.tensor(image, dtype=torch.float).cuda()
     # add batch dimension
@@ -40,23 +40,25 @@ for i in range(len(test_images)):
         boxes = outputs[0]['boxes'].data.numpy()
         scores = outputs[0]['scores'].data.numpy()
         # filter out boxes according to `detection_threshold`
-        boxes = boxes[scores >= DETECTION_THRESHOLD].astype(np.int32)
+        # boxes = boxes[scores >= DETECTION_THRESHOLD].astype(np.int32)
         draw_boxes = boxes.copy()
         # get all the predicited class names
         pred_classes = [CLASSES[i] for i in outputs[0]['labels'].cpu().numpy()]
 
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):
-            cv2.rectangle(orig_image,
-                          (int(box[0]), int(box[1])),
-                          (int(box[2]), int(box[3])),
-                          (0, 0, 255), 2)
-            cv2.putText(orig_image, pred_classes[j],
-                        (int(box[0]), int(box[1] - 5)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0),
-                        2, lineType=cv2.LINE_AA)
+            if scores[j] > DETECTION_THRESHOLD:
+                cv2.rectangle(orig_image,
+                              (int(box[0]), int(box[1])),
+                              (int(box[2]), int(box[3])),
+                              (0, 0, 255), 2)
+                cv2.putText(orig_image, pred_classes[j],
+                            (int(box[0]), int(box[1] - 5)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0),
+                            2, lineType=cv2.LINE_AA)
+            else: pass
         cv2.imshow('Prediction', orig_image)
-        cv2.waitKey(1)
+        cv2.waitKey(0)
         cv2.imwrite(f"{SAVE_IMAGE_TEST}/{image_name}.jpg", orig_image, )
     print(f"Image {i + 1} done...")
     print('-' * 50)

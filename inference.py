@@ -8,7 +8,7 @@ from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, INFERENCE_IMAGE_ROOT, D
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 
 inference_images = glob.glob(f"{INFERENCE_IMAGE_ROOT}/*")
-print(f"Test instances: {len(inference_images)}")
+print(f"Inference instances: {len(inference_images)}")
 
 # load the models and the trained weights
 model = create_model(num_classes=NUM_CLASSES, six_class_detection=True).to(DEVICE)
@@ -39,14 +39,13 @@ for i in range(len(inference_images)):
     if len(outputs[0]['boxes']) != 0:
         boxes = outputs[0]['boxes'].data.numpy()
         scores = outputs[0]['scores'].data.numpy()
-        # filter out boxes according to `detection_threshold`
-        # boxes = boxes[scores >= DETECTION_THRESHOLD].astype(np.int32)
         draw_boxes = boxes.copy()
         # get all the predicited class names
         pred_classes = [CLASSES[i+1] for i in outputs[0]['labels'].cpu().numpy()]
 
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):
+            # filter out boxes according to `detection_threshold`
             if scores[j] > DETECTION_THRESHOLD:
                 cv2.rectangle(orig_image,
                               (int(box[0]), int(box[1])),

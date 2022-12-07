@@ -94,8 +94,6 @@ if __name__ == '__main__':
     # train and validation loss lists to store loss values and plots graphs for all iterations
     train_loss_list = []
     val_loss_list = []
-    # name to save the trained models with
-    MODEL_NAME = 'models'
     # start the training epochs
     for epoch in range(NUM_EPOCHS):
         print(f"\nEPOCH [{epoch + 1} / {NUM_EPOCHS}]")

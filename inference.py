@@ -3,22 +3,22 @@ import glob
 import numpy as np
 import cv2
 from models import create_model
-from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, TEST_IMAGE_ROOT, DETECTION_THRESHOLD, SAVE_IMAGE_TEST
+from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, INFERENCE_IMAGE_ROOT, DETECTION_THRESHOLD, SAVE_IMAGE_TEST
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 
-test_images = glob.glob(f"{TEST_IMAGE_ROOT}/*")
-print(f"Test instances: {len(test_images)}")
+inference_images = glob.glob(f"{INFERENCE_IMAGE_ROOT}/*")
+print(f"Test instances: {len(inference_images)}")
 
 # load the models and the trained weights
 model = create_model(num_classes=NUM_CLASSES, six_class_detection=True).to(DEVICE)
 model.load_state_dict(torch.load(SAVE_MODEL_ROOT+'/detection_model14.pth', map_location=DEVICE))
 model.eval()
 
-for i in range(len(test_images)):
+for i in range(len(inference_images)):
     # get the image file name for saving output later on
-    image_name = test_images[i].split('/')[-1].split('.')[0]
-    image = cv2.imread(test_images[i])
+    image_name = inference_images[i].split('/')[-1].split('.')[0]
+    image = cv2.imread(inference_images[i])
     orig_image = image.copy()
     # BGR to RGB
     image = cv2.cvtColor(orig_image, cv2.COLOR_BGR2RGB).astype(np.float32)

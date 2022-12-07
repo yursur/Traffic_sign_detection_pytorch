@@ -17,7 +17,8 @@ ROOT_IMAGE = "C:/Users/yuras/Projects/Signs/data/detection/rtsd-d3-frames"
 ROOT_GT = "C:/Users/yuras/Projects/Signs/data/detection/rtsd-d3-gt"
 SAVE_MODEL_ROOT = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/train/models"
 SAVE_PLOTS_ROOT = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/train/plots"
-TEST_IMAGE_ROOT = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input"
+INFERENCE_IMAGE_ROOT = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
+TEST_IMAGE_ROOT = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/test"
 SAVE_IMAGE_TEST = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/test"
 
 #save models after every n epochs

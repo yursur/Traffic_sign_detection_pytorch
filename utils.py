@@ -4,6 +4,7 @@ import torchvision.transforms as T
 from torchvision.utils import draw_bounding_boxes
 import matplotlib.pyplot as plt
 from PIL.Image import Image
+from sklearn.metrics import precision_score, recall_score
 
 
 class Averager:
@@ -87,3 +88,18 @@ def intersection_over_union(gt_box, pred_box):
     iou = intersection / union
 
     return iou, intersection, union
+
+def precision_recall(y_true, pred_scores, thresholds):
+    precisions = []
+    recalls = []
+
+    for threshold in thresholds:
+        y_pred = ["positive" if score >= threshold else "negative" for score in pred_scores]
+
+        precision = precision_score(y_true=y_true, y_pred=y_pred, pos_label="positive")
+        recall = recall_score(y_true=y_true, y_pred=y_pred, pos_label="positive")
+
+        precisions.append(precision)
+        recalls.append(recall)
+
+    return precisions, recalls

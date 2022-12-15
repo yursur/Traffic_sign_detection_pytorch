@@ -32,6 +32,7 @@ for i in range(len(inference_images)):
     image = torch.unsqueeze(image, 0)
     with torch.no_grad():
         outputs = model(image)
+        print(outputs)
 
     # load all detection to CPU for further operations
     outputs = [{k: v.to('cpu') for k, v in t.items()} for t in outputs]
@@ -40,8 +41,9 @@ for i in range(len(inference_images)):
         boxes = outputs[0]['boxes'].data.numpy()
         scores = outputs[0]['scores'].data.numpy()
         draw_boxes = boxes.copy()
-        # get all the predicited class names
+        # get all the predicited class names and scores
         pred_classes = [CLASSES[i+1] for i in outputs[0]['labels'].cpu().numpy()]
+        pred_scores = outputs[0]['scores'].cpu().numpy()
 
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):
@@ -52,9 +54,13 @@ for i in range(len(inference_images)):
                               (int(box[2]), int(box[3])),
                               (0, 0, 255), 2)
                 cv2.putText(orig_image, pred_classes[j],
-                            (int(box[0]), int(box[1] - 5)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0),
-                            2, lineType=cv2.LINE_AA)
+                            (int(box[0]) - 5, int(box[1] - 15)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255),
+                            1, lineType=cv2.LINE_AA)
+                cv2.putText(orig_image, str(round(pred_scores[j],3)),
+                            (int(box[0]) - 5, int(box[1] - 5)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255),
+                            1, lineType=cv2.LINE_AA)
             else: pass
         cv2.imshow('Prediction', orig_image)
         cv2.waitKey(0)

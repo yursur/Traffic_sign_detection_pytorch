@@ -50,7 +50,9 @@ def get_class_dict(gt_df: pd.DataFrame):
     return class_dict
 
 def give_sings_from_dict(number: int, class_dict: dict):
-    """Returns sign by id in class_dict. (0 - background)"""
+    """
+    Returns sign by id in class_dict. (0 - background)
+    """
     if number == 0:
         return 0
     for sign, sign_id in class_dict.items():
@@ -63,3 +65,25 @@ def collate_fn(batch):
     of objects and to handle varying size tensors as well.
     """
     return tuple(zip(*batch))
+
+def intersection_over_union(gt_box, pred_box):
+    """
+    Returns IoU, size of intersection and size of union
+    """
+    # get coordinates of bottom_left and top_right points of intersection
+    inter_box_bottom_left = [max(gt_box[0], pred_box[0]), max(gt_box[1], pred_box[1])]
+    inter_box_top_right = [min(gt_box[2], pred_box[2]), min(gt_box[3], pred_box[3])]
+    # calculate size of intersection
+    inter_box_w = inter_box_top_right[0] - inter_box_bottom_left[0]
+    inter_box_h = inter_box_top_right[1] - inter_box_bottom_left[1]
+    intersection = inter_box_w * inter_box_h
+    # claculate size of ground truth box
+    gt_size = (gt_box[2] - gt_box[0]) * (gt_box[3] - gt_box[1])
+    # claculate size of predicted box
+    pred_size = (pred_box[2] - pred_box[0]) * (pred_box[3] - pred_box[1])
+    # calculate size of union
+    union = gt_size + pred_size - intersection
+
+    iou = intersection / union
+
+    return iou, intersection, union

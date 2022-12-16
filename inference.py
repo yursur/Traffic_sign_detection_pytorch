@@ -38,9 +38,8 @@ for i in range(len(inference_images)):
     outputs = [{k: v.to('cpu') for k, v in t.items()} for t in outputs]
     # carry further only if there are detected boxes
     if len(outputs[0]['boxes']) != 0:
-        boxes = outputs[0]['boxes'].data.numpy()
-        scores = outputs[0]['scores'].data.numpy()
-        draw_boxes = boxes.copy()
+        pred_boxes = outputs[0]['boxes'].data.numpy()
+        draw_boxes = pred_boxes.copy()
         # get all the predicited class names and scores
         pred_classes = [CLASSES[i+1] for i in outputs[0]['labels'].cpu().numpy()]
         pred_scores = outputs[0]['scores'].cpu().numpy()
@@ -48,7 +47,7 @@ for i in range(len(inference_images)):
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):
             # filter out boxes according to `detection_threshold`
-            if scores[j] > DETECTION_THRESHOLD:
+            if pred_scores[j] > DETECTION_THRESHOLD:
                 cv2.rectangle(orig_image,
                               (int(box[0]), int(box[1])),
                               (int(box[2]), int(box[3])),

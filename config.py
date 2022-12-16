@@ -9,8 +9,8 @@ NUM_CLASSES = 6
 NUM_EPOCHS = 50
 BATCH_SIZE = 15
 
-# any detection having confidence score below this will be discarded
-DETECTION_THRESHOLD = 0.4
+# any detection having score below this will be discarded
+DETECTION_THRESHOLD = 0.5
 
 #ROOTS
 ROOT_IMAGE = "C:/Users/yuras/Projects/Signs/data/detection/rtsd-d3-frames"

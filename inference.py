@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import cv2
 from models import create_model
-from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, INFERENCE_IMAGE_ROOT, DETECTION_THRESHOLD, SAVE_IMAGE_TEST
+from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, INFERENCE_IMAGE_ROOT, CONFIDENCE_THRESHOLD, SAVE_IMAGE_TEST
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 
@@ -46,8 +46,8 @@ for i in range(len(inference_images)):
 
         # draw the bounding boxes and write the class name on top of it
         for j, box in enumerate(draw_boxes):
-            # filter out boxes according to `detection_threshold`
-            if pred_scores[j] > DETECTION_THRESHOLD:
+            # filter out boxes according to `CONFIDENCE_THRESHOLD`
+            if pred_scores[j] > CONFIDENCE_THRESHOLD:
                 cv2.rectangle(orig_image,
                               (int(box[0]), int(box[1])),
                               (int(box[2]), int(box[3])),

@@ -16,7 +16,7 @@ model.load_state_dict(torch.load(SAVE_MODEL_ROOT+'/detection_model14.pth', map_l
 model.eval()
 
 for i in range(len(inference_images)):
-    # get the image file name for saving output later on
+    # get the image file name
     image_name = inference_images[i].split('/')[-1].split('.')[0]
     image = cv2.imread(inference_images[i])
     orig_image = image.copy()
@@ -57,7 +57,7 @@ for i in range(len(inference_images)):
                             (int(box[0]) - 5, int(box[1] - 15)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255),
                             1, lineType=cv2.LINE_AA)
-                cv2.putText(orig_image, str(round(pred_scores[j],3)),
+                cv2.putText(orig_image, 'conf: ' + str(round(pred_scores[j],3)),
                             (int(box[0]) - 5, int(box[1] - 5)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255),
                             1, lineType=cv2.LINE_AA)

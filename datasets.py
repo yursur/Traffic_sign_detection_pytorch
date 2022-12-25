@@ -81,16 +81,16 @@ class RTSD_by_groups(Dataset):
                 for i in range(num_objs):
                     boxes.append([box[1][i], box[2][i], box[3][i] + box[1][i], box[4][i] + box[2][i]])
 
-                labels += [n] * num_objs
+                labels += [n+1] * num_objs
 
-        #print(f'в итоге после прогона по {n} классу: \n boxes = {boxes}\nlabels = {labels}')
+        print(f'в итоге после прогона по {n} классу: \n boxes = {boxes}\nlabels = {labels}')
 
-        if len(labels) == 1:
+        if len(labels) == 0:
             area = torch.zeros(1)
             boxes = torch.zeros((0, 4), dtype=torch.float32)
             labels.append(0)
             iscrowd = torch.ones(1).to(torch.int64)
-        elif len(labels) == 2:
+        elif len(labels) == 1:
             area = torch.as_tensor([(boxes[0][3] - boxes[0][1]) * (boxes[0][2] - boxes[0][0])], dtype=torch.float32)
             boxes = torch.as_tensor(boxes, dtype=torch.float32)
             iscrowd = torch.zeros((len(labels),), dtype=torch.int64)

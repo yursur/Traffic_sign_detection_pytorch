@@ -69,7 +69,7 @@ def collate_fn(batch):
 
 def intersection_over_union(gt_box, pred_box):
     """
-    Returns IoU, size of intersection and size of union
+    Returns IoU
     """
     # get coordinates of bottom_left and top_right points of intersection
     inter_box_bottom_left = [max(gt_box[0], pred_box[0]), max(gt_box[1], pred_box[1])]
@@ -87,19 +87,19 @@ def intersection_over_union(gt_box, pred_box):
 
     iou = intersection / union
 
-    return iou, intersection, union
+    return iou
 
 def precision_recall(y_true, pred_scores, thresholds):
+    """
+    Returns list of precisions and list of recalls for every threshold in thresholds list
+    """
     precisions = []
     recalls = []
 
     for threshold in thresholds:
         y_pred = ["positive" if score >= threshold else "negative" for score in pred_scores]
 
-        precision = precision_score(y_true=y_true, y_pred=y_pred, pos_label="positive")
-        recall = recall_score(y_true=y_true, y_pred=y_pred, pos_label="positive")
-
-        precisions.append(precision)
-        recalls.append(recall)
+        precisions.append(precision_score(y_true=y_true, y_pred=y_pred, pos_label="positive"))
+        recalls.append(recall_score(y_true=y_true, y_pred=y_pred, pos_label="positive"))
 
     return precisions, recalls

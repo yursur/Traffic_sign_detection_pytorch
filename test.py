@@ -42,7 +42,7 @@ def test(test_data_loader, model):
             # print("\n----------ISCROWD = 1, sample was passed.----------\n")
             continue
 
-    print("\nTESTING WAS FINISHED WITH THE RESULTS:\n")
+    print(f"\nTESTING WAS FINISHED WITH THE RESULTS:\n {metric}")
     return metric
 
 
@@ -51,5 +51,5 @@ if __name__ == '__main__':
     model = create_model(num_classes=NUM_CLASSES, six_class_detection=True).to(DEVICE)
     model.load_state_dict(torch.load(SAVE_MODEL_ROOT+'/detection_model14.pth', map_location=DEVICE))
     model.eval()
-    test(test_loader, model)
+    tested_model = test(test_loader, model)
 

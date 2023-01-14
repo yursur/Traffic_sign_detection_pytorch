@@ -3,16 +3,16 @@ import glob
 import numpy as np
 import cv2
 from models import create_model
-from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT, INFERENCE_IMAGE_ROOT, CONFIDENCE_THRESHOLD, SAVE_IMAGE_TEST
+from config_detection import DEVICE, NUM_CLASSES, SAVE_MODEL_PATH, INFERENCE_IMAGE_PATH, CONFIDENCE_THRESHOLD, SAVE_IMAGE_PATH
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 
-inference_images = glob.glob(f"{INFERENCE_IMAGE_ROOT}/*")
+inference_images = glob.glob(f"{INFERENCE_IMAGE_PATH}/*")
 print(f"Inference instances: {len(inference_images)}")
 
 # load the models and the trained weights
 model = create_model(num_classes=NUM_CLASSES, six_class_detection=True).to(DEVICE)
-model.load_state_dict(torch.load(SAVE_MODEL_ROOT+'/detection_model14.pth', map_location=DEVICE))
+model.load_state_dict(torch.load(SAVE_MODEL_PATH + '/detection_model14.pth', map_location=DEVICE))
 model.eval()
 
 for i in range(len(inference_images)):
@@ -63,7 +63,7 @@ for i in range(len(inference_images)):
             else: pass
         cv2.imshow('Prediction', orig_image)
         cv2.waitKey(0)
-        cv2.imwrite(f"{SAVE_IMAGE_TEST}/{image_name}.jpg", orig_image, )
+        cv2.imwrite(f"{SAVE_IMAGE_PATH}/{image_name}.jpg", orig_image, )
     print(f"Image {i + 1} done...")
     print('-' * 50)
 print('TEST PREDICTIONS COMPLETE')

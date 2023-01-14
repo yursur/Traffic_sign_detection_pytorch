@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 from pprint import pprint
 # import matplotlib.pyplot as plt
 from models import create_model
-from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT
+from config_detection import DEVICE, NUM_CLASSES, SAVE_MODEL_PATH
 from datasets import test_loader
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
@@ -49,7 +49,7 @@ def test(test_data_loader, model):
 if __name__ == '__main__':
     ## load the model with the trained weights
     model = create_model(num_classes=NUM_CLASSES, six_class_detection=True).to(DEVICE)
-    model.load_state_dict(torch.load(SAVE_MODEL_ROOT+'/detection_model14.pth', map_location=DEVICE))
+    model.load_state_dict(torch.load(SAVE_MODEL_PATH + '/detection_model14.pth', map_location=DEVICE))
     model.eval()
     tested_model = test(test_loader, model)
 

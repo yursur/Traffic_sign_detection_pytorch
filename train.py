@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 import torch
 import time
 import matplotlib.pyplot as plt
-from config import DEVICE, NUM_CLASSES, NUM_EPOCHS, SAVE_MODEL_ROOT, SAVE_PLOTS_ROOT, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
+from config_detection import DEVICE, NUM_CLASSES, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
 from utils import Averager
 
 print(f"Device: {DEVICE}")
@@ -120,7 +120,7 @@ if __name__ == '__main__':
         print(f"Took {((end - start) / 60):.2f} minutes")
         if (epoch + 1) % EPOCHS_SAVE_MODEL == 0:
             ## save models after every n epochs
-            torch.save(model.state_dict(), f"{SAVE_MODEL_ROOT}/detection_model{epoch + 1}.pth")
+            torch.save(model.state_dict(), f"{SAVE_MODEL_PATH}/detection_model{epoch + 1}.pth")
             print("MODEL SAVED...")
 
         if (epoch + 1) % EPOCHS_SAVE_PLOTS == 0:
@@ -131,8 +131,8 @@ if __name__ == '__main__':
             valid_ax.plot(val_loss, color='red')
             valid_ax.set_xlabel('iterations')
             valid_ax.set_ylabel('validation loss')
-            fig_1.savefig(f"{SAVE_PLOTS_ROOT}/train_loss_{epoch + 1}.png")
-            fig_2.savefig(f"{SAVE_PLOTS_ROOT}/valid_loss_{epoch + 1}.png")
+            fig_1.savefig(f"{SAVE_PLOTS_PATH}/train_loss_{epoch + 1}.png")
+            fig_2.savefig(f"{SAVE_PLOTS_PATH}/valid_loss_{epoch + 1}.png")
             print("PLOTS SAVED...")
 
         if (epoch + 1) == NUM_EPOCHS:
@@ -143,8 +143,8 @@ if __name__ == '__main__':
             valid_ax.plot(val_loss, color='red')
             valid_ax.set_xlabel('iterations')
             valid_ax.set_ylabel('validation loss')
-            fig_1.savefig(f"{SAVE_PLOTS_ROOT}/train_loss_{epoch + 1}.png")
-            fig_2.savefig(f"{SAVE_PLOTS_ROOT}/valid_loss_{epoch + 1}.png")
-            torch.save(model.state_dict(), f"{SAVE_MODEL_ROOT}/models{epoch + 1}.pth")
+            fig_1.savefig(f"{SAVE_PLOTS_PATH}/train_loss_{epoch + 1}.png")
+            fig_2.savefig(f"{SAVE_PLOTS_PATH}/valid_loss_{epoch + 1}.png")
+            torch.save(model.state_dict(), f"{SAVE_MODEL_PATH}/models{epoch + 1}.pth")
 
         plt.close('all')

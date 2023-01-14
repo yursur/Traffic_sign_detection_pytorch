@@ -7,7 +7,7 @@ from torchvision.transforms import functional as F
 from PIL import Image
 
 from transformer import Resize_img_bb
-from config import ROOT_IMAGE, ROOT_GT, BATCH_SIZE
+from config_detection import IMAGES_PATH, GT_PATH, BATCH_SIZE
 from utils import collate_fn
 
 class RTSD_by_groups(Dataset):
@@ -121,8 +121,8 @@ class RTSD_by_groups(Dataset):
     def __len__(self):
         return len(self.imgs)
 
-train_dataset = RTSD_by_groups(root_image=ROOT_IMAGE, root_gt=ROOT_GT, train=True, transform=True)
-test_dataset = RTSD_by_groups(root_image=ROOT_IMAGE, root_gt=ROOT_GT, train=False, transform=True)
+train_dataset = RTSD_by_groups(root_image=IMAGES_PATH, root_gt=GT_PATH, train=True, transform=True)
+test_dataset = RTSD_by_groups(root_image=IMAGES_PATH, root_gt=GT_PATH, train=False, transform=True)
 
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=BATCH_SIZE,

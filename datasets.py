@@ -8,7 +8,7 @@ from PIL import Image
 
 from transformer import Resize_img_bb
 from config import ROOT_IMAGE, ROOT_GT, BATCH_SIZE
-from utils import collate_fn, give_sings_from_dict, show_img_with_bb
+from utils import collate_fn
 
 class RTSD_by_groups(Dataset):
     """
@@ -83,7 +83,7 @@ class RTSD_by_groups(Dataset):
 
                 labels += [n+1] * num_objs
 
-        print(f'в итоге после прогона по {n} классу: \n boxes = {boxes}\nlabels = {labels}')
+        # print(f'в итоге после прогона по {n+1} классу: \n boxes = {boxes}\nlabels = {labels}')
 
         if len(labels) == 0:
             area = torch.zeros(1)

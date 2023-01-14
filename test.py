@@ -2,7 +2,7 @@ import torch
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from tqdm.auto import tqdm
 from pprint import pprint
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from models import create_model
 from config import DEVICE, NUM_CLASSES, SAVE_MODEL_ROOT
 from datasets import test_loader

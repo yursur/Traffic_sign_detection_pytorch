@@ -5,7 +5,7 @@ from pprint import pprint
 # import matplotlib.pyplot as plt
 from models import create_model
 from config_detection import DEVICE, NUM_CLASSES, SAVE_MODEL_PATH
-from datasets import test_loader
+from detection.datasets import test_loader
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 

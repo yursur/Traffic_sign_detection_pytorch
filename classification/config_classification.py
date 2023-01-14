@@ -15,11 +15,11 @@ BATCH_SIZE = 1
 ## PATHS
 IMAGES_PATH = "C:/Users/yuras/Projects/Signs/data/detection/rtsd-d3-frames"
 GT_PATH = "C:/Users/yuras/Projects/Signs/data/detection/rtsd-d3-gt"
-SAVE_MODEL_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/train/models"
-SAVE_PLOTS_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/train/plots"
-INFERENCE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
+SAVE_MODEL_PATH = "../detection/output/train/models"
+SAVE_PLOTS_PATH = "../detection/output/train/plots"
+INFERENCE_IMAGE_PATH = "/input/inference"
 TEST_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/test"
-SAVE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/output/test"
+SAVE_IMAGE_PATH = "../detection/output/test"
 
 ## Save model and plot during training after every n epochs
 EPOCHS_SAVE_MODEL = 2

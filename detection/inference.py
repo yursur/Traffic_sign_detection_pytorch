@@ -41,7 +41,7 @@ for i in range(len(inference_images)):
         pred_boxes = outputs[0]['boxes'].data.numpy()
         draw_boxes = pred_boxes.copy()
         # get all the predicited class names and scores
-        pred_classes = [CLASSES[i] for i in outputs[0]['labels'].cpu().numpy()]
+        pred_classes = [CLASSES[label] for label in outputs[0]['labels'].cpu().numpy()]
         pred_scores = outputs[0]['scores'].cpu().numpy()
 
         # draw the bounding boxes and write the class name on top of it
@@ -66,6 +66,6 @@ for i in range(len(inference_images)):
         cv2.imwrite(f"{SAVE_IMAGE_PATH}/{image_name}.jpg", orig_image, )
     print(f"Image {i + 1} done...")
     print('-' * 50)
-print('TEST PREDICTIONS COMPLETE')
+print('PREDICTIONS COMPLETE')
 cv2.destroyAllWindows()
 

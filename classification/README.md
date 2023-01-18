@@ -1,1 +1,1 @@
-5 (not 6, cause one of them is just a main road) classification models, which used after detection.
+5 classification models, which used after detection (not 6, cause one of them is just a main road).

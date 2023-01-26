@@ -30,91 +30,48 @@ class blue_border_dataset(Dataset):
     def __init__(
             self,
             root_dataset: str,
+            subclass: str,
             train: bool = True,
             transform=False
     ):
         if train:
-            self.root_image = os.path.join(root_dataset, 'train')
-            imgs = pd.read_csv(os.path.join(root_dataset, 'train_filenames.txt'), names=['filename'])
-            self.gt_filename = 'train_gt.csv'
+            self.images_path = os.path.join(root_dataset, 'train')
+            gt = pd.read_csv(os.path.join(root_dataset, 'gt_train.csv'))
         else:
-            self.root_image = os.path.join(root_image, 'test')
-            imgs = pd.read_csv(os.path.join(root_gt, 'test_filenames.txt'), names=['filename'])
-            self.gt_filename = 'test_gt.csv'
+            self.images_path = os.path.join(root_dataset, 'test')
+            gt = pd.read_csv(root_dataset+'/gt_test.csv')
 
-        self.imgs = list(imgs.filename)
-        self.root_gt = root_gt
+        # extract only images of current subclass
+        imgs = []
+        labels = []
+        for img in gt.filename:
+            class_number = gt[gt.filename == img].class_number.values[0]
+            if num_to_class(class_number) in SUBCLASSES_DICT[subclass]:
+                imgs.append(img)
+                labels.append(class_number)
+
+        self.imgs = imgs
+        self.labels = labels
         self.train = train
         self.transform = transform
 
     def __getitem__(self, idx):
-        # load images
-        img_path = os.path.join(self.root_image, self.imgs[idx])
+        # load image and get class label
+        img_path = os.path.join(self.images_path, self.imgs[idx])
         img = Image.open(img_path).convert("RGB")
-
-        # get boxes and labels
-        boxes = []
-        labels = []
-
-        for n, cl in enumerate(os.listdir(self.root_gt)):
-            path = os.path.join(self.root_gt, cl)
-
-            if os.path.isdir(path):
-                gt_df = pd.read_csv(os.path.join(path, self.gt_filename))
-            else:
-                continue
-
-            if self.imgs[idx] in list(gt_df['filename']):
-                num_objs = gt_df['filename'].value_counts()[self.imgs[idx]]
-                box = []
-
-                for _, row in gt_df[gt_df['filename'] == self.imgs[idx]].items():
-                    box.append(list(row))
-
-                for i in range(num_objs):
-                    boxes.append([box[1][i], box[2][i], box[3][i] + box[1][i], box[4][i] + box[2][i]])
-
-                labels += [n+1] * num_objs
-
-        # print(f'в итоге после прогона по {n+1} классу: \n boxes = {boxes}\nlabels = {labels}')
-
-        if len(labels) == 0:
-            area = torch.zeros(1)
-            boxes = torch.zeros((0, 4), dtype=torch.float32)
-            labels.append(0)
-            iscrowd = torch.ones(1).to(torch.int64)
-        elif len(labels) == 1:
-            area = torch.as_tensor([(boxes[0][3] - boxes[0][1]) * (boxes[0][2] - boxes[0][0])], dtype=torch.float32)
-            boxes = torch.as_tensor(boxes, dtype=torch.float32)
-            iscrowd = torch.zeros((len(labels),), dtype=torch.int64)
-        else:
-            boxes = torch.as_tensor(boxes, dtype=torch.float32)
-            area = box_area(boxes)
-            iscrowd = torch.zeros((len(labels),), dtype=torch.int64)
-
-        labels = torch.as_tensor(labels, dtype=torch.int64)
-        image_id = torch.tensor([idx])
+        label = self.labels[idx]
 
         if self.transform:
-            img, boxes = Resize_img_bb(img, boxes, size=(600, 600))
+            pass
 
-        target = {}
-        target["boxes"] = boxes
-        target["labels"] = labels
-        target["image_id"] = image_id
-        target["area"] = area
-        target["iscrowd"] = iscrowd
-
-        img = F.pil_to_tensor(img)
-        img = F.convert_image_dtype(img, dtype=torch.float32)
-        #print(f"ИТОГО ДЛЯ №{idx}:\n    img = {img}\n    target = {target}\n____________________________________________________________")
-
-        return img, target
+        #print(f"ИТОГО ДЛЯ №{idx}:\n    img = {img}\n    label = {label}\n____________________________________________________________")
+        return img, label
 
     def __len__(self):
         return len(self.imgs)
 
 nums_to_classes_df = pd.read_csv(DATASETS_PATH+'/numbers_to_classes.csv')
+train_imgs = pd.read_csv(os.path.join(DATASETS_PATH, 'train'))
 
 
 

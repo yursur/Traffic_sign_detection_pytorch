@@ -2,15 +2,12 @@ import os
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
-from torchvision.ops import box_area
-from torchvision.transforms import functional as F
 from PIL import Image
 
-from transformer import Resize_img_bb
 from config_classification import DATASETS_PATH, SUBCLASSES_DICT, BATCH_SIZE
 from utils import num_to_class
 
-class blue_border_dataset(Dataset):
+class classification_dataset(Dataset):
     """
     Classification dataset for blue_border subclass.
         Image dataset structured as follows:

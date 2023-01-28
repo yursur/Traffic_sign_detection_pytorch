@@ -4,12 +4,13 @@ import torch
 from torch.utils.data import Dataset
 from PIL import Image
 
+
 from config_classification import DATASETS_PATH, SUBCLASSES_DICT, BATCH_SIZE
 from utils import num_to_class
 
 class classification_dataset(Dataset):
     """
-    Classification dataset for blue_border subclass.
+    Classification dataset class.
         Image dataset structured as follows:
     root_dataset/
                ├── train/
@@ -43,7 +44,7 @@ class classification_dataset(Dataset):
         labels = []
         for img in gt.filename:
             class_number = gt[gt.filename == img].class_number.values[0]
-            if num_to_class(class_number) in SUBCLASSES_DICT[subclass]:
+            if num_to_class(class_number, nums_to_classes_df=nums_to_classes_df) in SUBCLASSES_DICT[subclass]:
                 imgs.append(img)
                 labels.append(class_number)
 
@@ -61,33 +62,47 @@ class classification_dataset(Dataset):
         if self.transform:
             pass
 
-        #print(f"ИТОГО ДЛЯ №{idx}:\n    img = {img}\n    label = {label}\n____________________________________________________________")
+        print(f"ИТОГО ДЛЯ №{idx}:\n    img = {img}\n    label = {label}\n____________________________________________________________")
         return img, label
 
     def __len__(self):
         return len(self.imgs)
 
+
+# Get numbers_to_classes Dataframe for using it in num_to_class function.
+# This datafraim contains links between each of the class numbers and its real class.
 nums_to_classes_df = pd.read_csv(DATASETS_PATH+'/numbers_to_classes.csv')
-train_imgs = pd.read_csv(os.path.join(DATASETS_PATH, 'train'))
 
 
+# Creating classification train and test datasets
+train_dataset_dict = dict()
+test_dataset_dict = dict()
+for subclass in SUBCLASSES_DICT:
+    # train datasets
+    train_dataset_dict[subclass] = classification_dataset(root_dataset=DATASETS_PATH,
+                                                                    subclass=subclass,
+                                                                    train=True)
+    # test datasets
+    test_dataset_dict[subclass] = classification_dataset(root_dataset=DATASETS_PATH,
+                                                                    subclass=subclass,
+                                                                    train=False)
+
+# Creating dataloaders for classification datasets
+train_dataloader_dict = dict()
+test_dataloader_dict = dict()
+for subclass in SUBCLASSES_DICT:
+    # train dataloaders
+    train_dataloader_dict[subclass] = torch.utils.data.DataLoader(dataset=train_dataset_dict[subclass],
+                                                                  batch_size=BATCH_SIZE,
+                                                                  shuffle=True)
+    # test dataloaders
+    test_dataloader_dict[subclass] = torch.utils.data.DataLoader(dataset=test_dataset_dict[subclass],
+                                                                 batch_size=BATCH_SIZE)
 
 
-
-
-
-
-train_dataset = RTSD_by_groups(root_image=IMAGES_PATH, root_gt=GT_PATH, train=True, transform=True)
-test_dataset = RTSD_by_groups(root_image=IMAGES_PATH, root_gt=GT_PATH, train=False, transform=True)
-
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=BATCH_SIZE,
-                                           shuffle=True,
-                                           collate_fn=collate_fn)
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                          batch_size=BATCH_SIZE,
-                                          shuffle=False,
-                                          collate_fn=collate_fn)
-
-print(f"Number of training samples: {len(train_dataset)}")
-print(f"Number of validation samples: {len(test_dataset)}\n")
+print(f"Number of samples in every train dataset is:")
+for ds, samples in train_dataset_dict.items():
+    print(f"{ds}: {len(samples)} samples")
+print(f"Number of samples in every test dataset is:")
+for ds, samples in test_dataset_dict.items():
+    print(f"{ds}: {len(samples)} samples")

@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 import torch
 import time
 import matplotlib.pyplot as plt
-from config_detection import DEVICE, NUM_CLASSES, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
+from config import DEVICE, NUM_CLASSES, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
 from utils import Averager
 
 print(f"Device: {DEVICE}")

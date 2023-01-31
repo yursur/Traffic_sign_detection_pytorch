@@ -7,7 +7,7 @@ from torchvision.transforms import functional as F
 from PIL import Image
 
 from transformer import Resize_img_bb
-from config_detection import IMAGES_PATH, GT_PATH, BATCH_SIZE
+from config import IMAGES_PATH, GT_PATH, BATCH_SIZE
 from utils import collate_fn
 
 class RTSD_by_groups(Dataset):

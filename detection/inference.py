@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import cv2
 from models import create_model
-from config_detection import DEVICE, NUM_CLASSES, SAVE_MODEL_PATH, INFERENCE_IMAGE_PATH, CONFIDENCE_THRESHOLD, SAVE_IMAGE_PATH
+from config import DEVICE, NUM_CLASSES, SAVE_MODEL_PATH, INFERENCE_IMAGE_PATH, CONFIDENCE_THRESHOLD, SAVE_IMAGE_PATH
 
 CLASSES = ['background', 'blue_border', 'blue_rect', 'danger', 'main_road', 'mandatory', 'prohibitory']
 

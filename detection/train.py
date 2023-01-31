@@ -88,7 +88,7 @@ def validate(valid_data_loader, model):
 
 if __name__ == '__main__':
     ## initialize the models and move to the device
-    model = create_model(num_classes=NUM_CLASSES, six_class_detection=True)
+    model = create_model(num_classes=NUM_CLASSES)
     model = model.to(DEVICE)
     ## get the models parameters
     params = [p for p in model.parameters() if p.requires_grad]

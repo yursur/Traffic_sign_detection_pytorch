@@ -1,6 +1,4 @@
-import pandas as pd
 
-from config import DATASETS_PATH
 
 def num_to_class(num, nums_to_classes_df):
     """

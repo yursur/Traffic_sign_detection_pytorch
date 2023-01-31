@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 
 
-from config_classification import DATASETS_PATH, SUBCLASSES_DICT, BATCH_SIZE
+from config import DATASETS_PATH, SUBCLASSES_DICT, BATCH_SIZE
 from utils import num_to_class
 
 class classification_dataset(Dataset):

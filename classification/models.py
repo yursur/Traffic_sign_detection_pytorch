@@ -1,7 +1,7 @@
 from torchvision.models import resnet50, ResNet50_Weights
 from torch import nn
 
-from config_classification import SUBCLASSES_DICT
+from config import SUBCLASSES_DICT
 
 def create_model(subclass: str):
     """

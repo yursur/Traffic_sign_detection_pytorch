@@ -4,9 +4,9 @@ import torch
 from torch.utils.data import Dataset
 from PIL import Image
 
-
-from config import DATASETS_PATH, SUBCLASSES_DICT, BATCH_SIZE
-from utils import num_to_class
+from classification.config import DATASETS_PATH, BATCH_SIZE
+from classification.blue_border.config import CLASSES
+from classification.utils import num_to_class
 
 class classification_dataset(Dataset):
     """
@@ -28,7 +28,6 @@ class classification_dataset(Dataset):
     def __init__(
             self,
             root_dataset: str,
-            subclass: str,
             train: bool = True,
             transform=False
     ):
@@ -44,7 +43,7 @@ class classification_dataset(Dataset):
         labels = []
         for img in gt.filename:
             class_number = gt[gt.filename == img].class_number.values[0]
-            if num_to_class(class_number, nums_to_classes_df=nums_to_classes_df) in SUBCLASSES_DICT[subclass]:
+            if num_to_class(class_number, nums_to_classes_df) in CLASSES:
                 imgs.append(img)
                 labels.append(class_number)
 
@@ -73,36 +72,19 @@ class classification_dataset(Dataset):
 # This datafraim contains links between each of the class numbers and its real class.
 nums_to_classes_df = pd.read_csv(DATASETS_PATH+'/numbers_to_classes.csv')
 
-
 # Creating classification train and test datasets
-train_dataset_dict = dict()
-test_dataset_dict = dict()
-for subclass in SUBCLASSES_DICT:
-    # train datasets
-    train_dataset_dict[subclass] = classification_dataset(root_dataset=DATASETS_PATH,
-                                                                    subclass=subclass,
-                                                                    train=True)
-    # test datasets
-    test_dataset_dict[subclass] = classification_dataset(root_dataset=DATASETS_PATH,
-                                                                    subclass=subclass,
-                                                                    train=False)
+train_dataset = classification_dataset(root_dataset=DATASETS_PATH,
+                                                      train=True)
+test_dataset = classification_dataset(root_dataset=DATASETS_PATH,
+                                      train=False)
 
 # Creating dataloaders for classification datasets
-train_dataloader_dict = dict()
-test_dataloader_dict = dict()
-for subclass in SUBCLASSES_DICT:
-    # train dataloaders
-    train_dataloader_dict[subclass] = torch.utils.data.DataLoader(dataset=train_dataset_dict[subclass],
-                                                                  batch_size=BATCH_SIZE,
-                                                                  shuffle=True)
-    # test dataloaders
-    test_dataloader_dict[subclass] = torch.utils.data.DataLoader(dataset=test_dataset_dict[subclass],
-                                                                 batch_size=BATCH_SIZE)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=BATCH_SIZE,
+                                           shuffle=True)
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                          batch_size=BATCH_SIZE)
 
+print(f"Number of samples in BLUE_BORDER train dataset: {len(train_dataset)}")
+print(f"Number of samples in BLUE_BORDER test dataset: {len(test_dataset)}")
 
-print(f"Number of samples in every train dataset is:")
-for ds, samples in train_dataset_dict.items():
-    print(f"{ds}: {len(samples)} samples")
-print(f"Number of samples in every test dataset is:")
-for ds, samples in test_dataset_dict.items():
-    print(f"{ds}: {len(samples)} samples")

@@ -1,17 +1,17 @@
-from classification.datasets import train_dataloader_dict, test_dataloader_dict
+from classification.blue_border.datasets import train_dataloader_dict, test_dataloader_dict
 from models import create_model
 from tqdm.auto import tqdm
 import torch
 import time
 import matplotlib.pyplot as plt
-from config import DEVICE, SUBCLASSES_DICT, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
+from classification.config import DEVICE, SUBCLASSES_DICT, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, EPOCHS_SAVE_MODEL, EPOCHS_SAVE_PLOTS
 from utils import Averager
 import copy
 
 print(f"Device: {DEVICE}")
 
 ## function for running training iterations
-def train_model(model, criterion, optimizer, scheduler, num_epochs):
+def train_model(model, subclass, criterion, optimizer, scheduler, num_epochs):
     """
         Function for training classification model.
     """
@@ -30,16 +30,18 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
         for phase in ['train', 'val']:
             if phase == 'train':
                 model.train()  # Set model to training mode
+                dataloader = train_dataloader_dict[subclass]
             else:
                 model.eval()   # Set model to evaluate mode
+                dataloader = test_dataloader_dict[subclass]
 
             running_loss = 0.0
             running_corrects = 0
 
             # Iterate over data.
-            for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device)
-                labels = labels.to(device)
+            for batch_id, (inputs, labels) in enumerate(dataloader):
+                inputs = inputs.to(DEVICE)
+                labels = labels.to(DEVICE)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
@@ -62,8 +64,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
             if phase == 'train':
                 scheduler.step()
 
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
+            epoch_loss = running_loss / len(outputs)
+            epoch_acc = running_corrects.double() / len(outputs)
 
             print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
 

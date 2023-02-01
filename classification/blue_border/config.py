@@ -9,5 +9,3 @@ BATCH_SIZE = 15
 SAVE_MODEL_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/blue_border/output/models"
 SAVE_PLOTS_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/blue_border/output/plots"
 
-# SAVE PLOTS EVERY 'EPOCHS_SAVE_PLOTS' EPOCH
-EPOCHS_SAVE_PLOTS = 2

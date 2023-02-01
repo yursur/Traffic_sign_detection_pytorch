@@ -105,7 +105,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 print(f"Number of samples in BLUE_BORDER train dataset: {len(train_dataset)}")
 print(f"Number of samples in BLUE_BORDER test dataset: {len(test_dataset)}")
 
-
+# # mean and std calculating for normalize
 # def mean_std(loader):
 #   images, labels = next(iter(loader))
 #   # shape of images = [b,c,w,h]

@@ -8,14 +8,8 @@ import torch
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # DEVICE = torch.device('cpu')
 
-## HYPER-PARAMETERS FOR TRAINING
-NUM_EPOCHS = 50
-BATCH_SIZE = 15
-
 ## PATHS
 DATASETS_PATH = "C:/Users/yuras/Projects/Signs/data/classification/rtsd-r3"
-SAVE_MODEL_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/output/train/models"
-SAVE_PLOTS_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/output/train/plots"
 INFERENCE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
 TEST_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/test"
 SAVE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/output/test"
@@ -38,6 +32,3 @@ SUBCLASSES_DICT = {
                     '2_6', '3_18_2', '3_19', '3_30', '3_29', '3_11_n5', '3_13_r3.5']
 }
 
-## Save model and plot during training after every n epochs
-EPOCHS_SAVE_MODEL = 2
-EPOCHS_SAVE_PLOTS = 2

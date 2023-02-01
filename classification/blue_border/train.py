@@ -13,7 +13,7 @@ from classification.blue_border.config import NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_
 
 print(f"Device: {DEVICE}")
 
-## function for running training iterations
+# function for running training iterations
 def train_model(model, criterion, optimizer, scheduler, num_epochs):
     """
         Function for training classification model.
@@ -76,7 +76,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
             if phase == 'train':
                 scheduler.step()
 
-            #statistics for the epoch
+            # statistics for the epoch
             epoch_loss = running_loss / len(outputs)
             epoch_acc = running_corrects.double() / len(outputs)
 

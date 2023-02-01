@@ -4,8 +4,8 @@ import torch
 from torch.utils.data import Dataset
 from PIL import Image
 
-from classification.config import DATASETS_PATH, BATCH_SIZE
-from classification.blue_border.config import CLASSES
+from classification.config import DATASETS_PATH
+from classification.blue_border.config import CLASSES, BATCH_SIZE
 from classification.utils import num_to_class
 
 class classification_dataset(Dataset):

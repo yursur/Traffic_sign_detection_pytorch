@@ -7,9 +7,8 @@ import copy
 import matplotlib.pyplot as plt
 
 from models import create_model
-from classification.blue_border.datasets import train_loader, test_loader
-from classification.config import DEVICE
-from classification.blue_border.config import NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, CLASSES
+from datasets import train_loader, test_loader
+from config import NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, CLASSES, DEVICE
 
 print(f"Device: {DEVICE}")
 

@@ -5,9 +5,8 @@ from torchvision import transforms as T
 from torch.utils.data import Dataset
 from PIL import Image
 
-from classification.config import DATASETS_PATH
-from classification.utils import num_to_class
-from classification.blue_border.config import CLASSES, BATCH_SIZE
+from utils import num_to_class
+from config import CLASSES, BATCH_SIZE, DATASETS_PATH
 
 class classification_dataset(Dataset):
     """

@@ -2,19 +2,7 @@
 Hyper-params for classification models
 and paths, which are used in the project.
 """
-import torch
-
-## DEVICE cuda OR cpu
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# DEVICE = torch.device('cpu')
-
-## PATHS
-DATASETS_PATH = "C:/Users/yuras/Projects/Signs/data/classification/rtsd-r3"
-INFERENCE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
-TEST_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/test"
-SAVE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/output/test"
-
-## CLASSES IN SUBCLASSES
+# CLASSES IN SUBCLASSES
 SUBCLASSES_DICT = {
     'blue_border': ['5_16', '7_3', '7_2', '7_12', '7_4', '7_11', '7_7', '5_18', '7_5', '7_6', '7_1'],
     'blue_rect': ['5_20', '5_19_1', '5_15_5', '6_3_1', '6_7', '5_15_3', '6_4', '6_6', '5_15_1',\

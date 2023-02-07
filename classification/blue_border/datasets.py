@@ -14,13 +14,25 @@ class classification_dataset(Dataset):
         Image dataset structured as follows:
     root_dataset/
                ├── train/
-               │       ├── img1.jpg
-               │       ├── img2.jpg
-               │       └── img3.jpg
+               │       ├── class_1/
+               │       │        ├── img1.jpg
+               │       │        ├── img2.jpg
+               │       │        └── img3.jpg
+               │             ...
+               │       └── class_6/
+               │                ├── img1.jpg
+               │                ├── img2.jpg
+               │                └── img3.jpg
                ├── test/
-               │       ├── img1.jpg
-               │       ├── img2.jpg
-               │       └── img3.jpg
+               │       ├── class_1/
+               │       │        ├── img1.jpg
+               │       │        ├── img2.jpg
+               │       │        └── img3.jpg
+               │             ...
+               │       └── class_6/
+               │                ├── img1.jpg
+               │                ├── img2.jpg
+               │                └── img3.jpg
                ├── train_gt.csv
                └── test_gt.csv
     """
@@ -32,23 +44,15 @@ class classification_dataset(Dataset):
             transform=False
     ):
         if train:
-            self.images_path = os.path.join(root_dataset, 'train')
+            self.images_path = os.path.join(root_dataset, 'train', 'blue_border')
             gt = pd.read_csv(os.path.join(root_dataset, 'gt_train.csv'))
         else:
-            self.images_path = os.path.join(root_dataset, 'test')
+            self.images_path = os.path.join(root_dataset, 'test', 'blue_border')
             gt = pd.read_csv(root_dataset+'/gt_test.csv')
 
-        # extract only images of current subclass
-        imgs = []
-        labels = []
-        for img in gt.filename:
-            class_number = gt[gt.filename == img].class_number.values[0]
-            if num_to_class(class_number, nums_to_classes_df) in CLASSES:
-                imgs.append(img)
-                labels.append(class_number)
-
-        self.imgs = imgs
-        self.labels = labels
+        # extract images and labels of current subclass
+        self.imgs = os.listdir(self.images_path)
+        self.labels = gt.class_number.to_list()
         self.train = train
         self.transform = transform
 

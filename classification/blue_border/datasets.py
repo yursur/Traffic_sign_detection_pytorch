@@ -48,7 +48,7 @@ class classification_dataset(Dataset):
             gt = pd.read_csv(os.path.join(root_dataset, 'gt_train.csv'))
         else:
             self.images_path = os.path.join(root_dataset, 'test', 'blue_border')
-            gt = pd.read_csv(root_dataset+'/gt_test.csv')
+            gt = pd.read_csv(os.path.join(root_dataset, 'gt_test.csv'))
 
         # extract images and labels of current subclass
         self.imgs = os.listdir(self.images_path)
@@ -88,7 +88,7 @@ data_transforms = {
 
 # Get numbers_to_classes Dataframe for using it in num_to_class function.
 # This dataframe contains links between each of the class numbers and its real class.
-nums_to_classes_df = pd.read_csv(DATASETS_PATH+'/numbers_to_classes.csv')
+nums_to_classes_df = pd.read_csv(os.path.join(DATASETS_PATH, 'numbers_to_classes.csv'))
 
 # Creating classification train and test datasets
 train_dataset = classification_dataset(root_dataset=DATASETS_PATH,
@@ -100,7 +100,7 @@ test_dataset = classification_dataset(root_dataset=DATASETS_PATH,
 
 # Creating dataloaders for classification datasets
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=len(train_dataset),
+                                           batch_size=BATCH_SIZE,
                                            shuffle=False)
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=BATCH_SIZE)

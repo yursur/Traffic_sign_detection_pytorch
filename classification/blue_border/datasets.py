@@ -45,10 +45,10 @@ class classification_dataset(Dataset):
     ):
         if train:
             self.images_path = os.path.join(root_dataset, 'train', 'blue_border')
-            gt = pd.read_csv(os.path.join(root_dataset, 'gt_train_blue_border.csv'))
+            gt = pd.read_csv(os.path.join(root_dataset, 'train', 'gt_train_blue_border.csv'))
         else:
             self.images_path = os.path.join(root_dataset, 'test', 'blue_border')
-            gt = pd.read_csv(os.path.join(root_dataset, 'gt_test_blue_border.csv'))
+            gt = pd.read_csv(os.path.join(root_dataset, 'test', 'gt_test_blue_border.csv'))
 
         # extract images and labels of current subclass
         self.imgs = os.listdir(self.images_path)

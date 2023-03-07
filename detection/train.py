@@ -118,6 +118,7 @@ if __name__ == '__main__':
         print(f"Train loss: {train_loss_hist.value:.3f} \n Validation loss: {val_loss_hist.value:.3f}")
         end = time.time()
         print(f"Took {((end - start) / 60):.2f} minutes")
+
         if (epoch + 1) % EPOCHS_SAVE_MODEL == 0:
             ## save models after every n epochs
             torch.save(model.state_dict(), f"{SAVE_MODEL_PATH}/detection_model{epoch + 1}.pth")

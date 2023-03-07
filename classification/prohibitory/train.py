@@ -85,14 +85,10 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
             if phase == 'train':
                 train_loss.append(epoch_loss)
                 train_acc.append(epoch_acc)
-                for jkj in train_loss:
-                    print(f"ITEM: {jkj}\nType: {type(jkj)}")
                 loss_ax.plot(train_loss, color='blue')
                 loss_ax.set_xlabel('epochs')
                 loss_ax.set_ylabel('train loss')
                 acc_ax.plot(train_acc, color='red')
-                for jkj in train_acc:
-                    print(f"ITEM: {jkj}\nType: {type(jkj)}")
                 acc_ax.set_xlabel('epochs')
                 acc_ax.set_ylabel('train accuracy')
                 fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")

@@ -50,7 +50,7 @@ class classification_dataset(Dataset):
             self.images_path = os.path.join(root_dataset, 'train', CLASS_NAME)
             gt = pd.read_csv(os.path.join(root_dataset, 'train', 'gt_train_'+CLASS_NAME+'.csv'))
         else:
-            self.images_path = os.path.join(root_dataset, 'test', CLASS_NAME)
+            self.images_path = os.path.join(root_dataset, 'test', 'blue_rect')
             gt = pd.read_csv(os.path.join(root_dataset, 'test', 'gt_test_'+CLASS_NAME+'.csv'))
 
         # extract images and labels of current subclass
@@ -100,7 +100,7 @@ test_dataset = classification_dataset(root_dataset=DATASETS_PATH,
 # Creating dataloaders for classification datasets
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=BATCH_SIZE,
-                                           shuffle=True)
+                                           shuffle=False)
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=BATCH_SIZE)
 

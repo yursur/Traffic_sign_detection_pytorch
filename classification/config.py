@@ -1,5 +1,5 @@
 """
-Hyper-params for classification models
+Common params for classification models
 and paths, which are used in the project.
 """
 # CLASSES IN SUBCLASSES

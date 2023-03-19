@@ -12,6 +12,7 @@ from config import CLASS_NAME, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, CLA
 
 print(f"Device: {DEVICE}")
 
+
 # function for running training iterations
 def train_model(model, criterion, optimizer, scheduler, num_epochs):
     """
@@ -39,7 +40,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 model.train()  # Set model to training mode
                 dataloader = train_loader
             else:
-                model.eval()   # Set model to evaluate mode
+                model.eval()  # Set model to evaluate mode
                 dataloader = test_loader
 
             running_loss = 0.0
@@ -47,7 +48,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
             # create two subplots: for loss and for accuracy
             fig_1, loss_ax = plt.subplots()
             fig_2, acc_ax = plt.subplots()
-
 
             # Iterate over data.
             for batch_id, (inputs, labels) in enumerate(dataloader):
@@ -119,7 +119,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 print("MODEL SAVED!")
 
         time_epoch = time.time() - start_epoch
-        print(f"\nEpoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
+        print(f"\nEpoch [{epoch + 1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
         plt.close('all')
 
     time_training = time.time() - since
@@ -145,4 +145,3 @@ if __name__ == '__main__':
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
     # train the model
     trained_model = train_model(model, criterion, optimizer, exp_lr_scheduler, num_epochs=NUM_EPOCHS)
-

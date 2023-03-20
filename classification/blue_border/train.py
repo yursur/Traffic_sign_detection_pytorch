@@ -76,23 +76,19 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 scheduler.step()
 
             # statistics for the epoch
-            epoch_loss = running_loss / len(outputs)
-            epoch_acc = running_corrects.double() / len(outputs)
+            epoch_loss = running_loss / len(dataloader)
+            epoch_acc = running_corrects.double() / len(dataloader)
 
-            print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
+            print(f'{phase} Loss: {epoch_loss:.4f}, {type(epoch_loss)}\n      Acc: {epoch_acc:.4f}, {type(epoch_acc)}')
 
             # update loss and accuracy lists and save the plots
             if phase == 'train':
                 train_loss.append(epoch_loss)
-                train_acc.append(epoch_acc)
-                for jkj in train_loss:
-                    print(f"ITEM: {jkj}\nType: {type(jkj)}")
+                train_acc.append(epoch_acc.cpu().numpy())
                 loss_ax.plot(train_loss, color='blue')
                 loss_ax.set_xlabel('epochs')
                 loss_ax.set_ylabel('train loss')
                 acc_ax.plot(train_acc, color='red')
-                for jkj in train_acc:
-                    print(f"ITEM: {jkj}\nType: {type(jkj)}")
                 acc_ax.set_xlabel('epochs')
                 acc_ax.set_ylabel('train accuracy')
                 fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")
@@ -100,7 +96,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 print(f"{phase} PLOTS SAVED!")
             else:
                 val_loss.append(epoch_loss)
-                val_acc.append(epoch_acc)
+                val_acc.append(epoch_acc.cpu().numpy())
                 loss_ax.plot(val_loss, color='blue')
                 loss_ax.set_xlabel('epochs')
                 loss_ax.set_ylabel('validation loss')

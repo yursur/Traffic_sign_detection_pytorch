@@ -44,9 +44,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
 
             running_loss = 0.0
             running_corrects = 0
-            # create two subplots: for loss and for accuracy
-            fig_1, loss_ax = plt.subplots()
-            fig_2, acc_ax = plt.subplots()
 
 
             # Iterate over data.
@@ -76,36 +73,17 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 scheduler.step()
 
             # statistics for the epoch
-            epoch_loss = running_loss / len(outputs)
-            epoch_acc = running_corrects.double() / len(outputs)
-
+            epoch_loss = running_loss / len(dataloader.dataset)
+            epoch_acc = running_corrects.double() / len(dataloader.dataset)
             print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
 
-            # update loss and accuracy lists and save the plots
+            # update loss and accuracy lists for plots
             if phase == 'train':
                 train_loss.append(epoch_loss)
-                train_acc.append(epoch_acc)
-                loss_ax.plot(train_loss, color='blue')
-                loss_ax.set_xlabel('epochs')
-                loss_ax.set_ylabel('train loss')
-                acc_ax.plot(train_acc, color='red')
-                acc_ax.set_xlabel('epochs')
-                acc_ax.set_ylabel('train accuracy')
-                fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")
-                fig_2.savefig(f"{SAVE_PLOTS_PATH}/{phase}_acc_plot.png")
-                print(f"{phase} PLOTS SAVED!")
+                train_acc.append(epoch_acc.cpu().numpy())
             else:
                 val_loss.append(epoch_loss)
-                val_acc.append(epoch_acc)
-                loss_ax.plot(val_loss, color='blue')
-                loss_ax.set_xlabel('epochs')
-                loss_ax.set_ylabel('validation loss')
-                acc_ax.plot(val_acc, color='red')
-                acc_ax.set_xlabel('epochs')
-                acc_ax.set_ylabel('validation accuracy')
-                fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")
-                fig_2.savefig(f"{SAVE_PLOTS_PATH}/{phase}_acc_plot.png")
-                print(f"{phase} PLOTS SAVED!")
+                val_acc.append(epoch_acc.cpu().numpy())
 
             # deep copy and save the best model
             if phase == 'val' and epoch_acc > best_acc:
@@ -113,6 +91,23 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 best_model_wts = copy.deepcopy(model.state_dict())
                 torch.save(best_model_wts, f"{SAVE_MODEL_PATH}/{CLASS_NAME}_classification_model.pth")
                 print("MODEL SAVED!")
+
+        # create two subplots: for loss and for accuracy
+        fig_1, loss_ax = plt.subplots()
+        loss_ax.plot(train_loss, color='blue', label='train', marker='o')
+        loss_ax.plot(val_loss, color='red', label='val', marker='o')
+        loss_ax.set_xlabel('epochs')
+        loss_ax.set_ylabel('loss')
+
+        fig_2, acc_ax = plt.subplots()
+        acc_ax.plot(train_acc, color='blue', label='train', marker='o')
+        acc_ax.plot(val_acc, color='red', label='val', marker='o')
+        acc_ax.set_xlabel('epochs')
+        acc_ax.set_ylabel('accuracy')
+
+        fig_1.savefig(f"{SAVE_PLOTS_PATH}/loss_plot.png")
+        fig_2.savefig(f"{SAVE_PLOTS_PATH}/acc_plot.png")
+        print(f"PLOTS SAVED!")
 
         time_epoch = time.time() - start_epoch
         print(f"\nEpoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")

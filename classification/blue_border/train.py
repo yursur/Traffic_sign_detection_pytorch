@@ -12,7 +12,6 @@ from config import CLASS_NAME, NUM_EPOCHS, SAVE_MODEL_PATH, SAVE_PLOTS_PATH, CLA
 
 print(f"Device: {DEVICE}")
 
-
 # function for running training iterations
 def train_model(model, criterion, optimizer, scheduler, num_epochs):
     """
@@ -40,14 +39,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 model.train()  # Set model to training mode
                 dataloader = train_loader
             else:
-                model.eval()  # Set model to evaluate mode
+                model.eval()   # Set model to evaluate mode
                 dataloader = test_loader
 
             running_loss = 0.0
             running_corrects = 0
-            # create two subplots: for loss and for accuracy
-            fig_1, loss_ax = plt.subplots()
-            fig_2, acc_ax = plt.subplots()
+
 
             # Iterate over data.
             for batch_id, (inputs, labels) in enumerate(dataloader):
@@ -76,36 +73,17 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 scheduler.step()
 
             # statistics for the epoch
-            epoch_loss = running_loss / len(dataloader)
-            epoch_acc = running_corrects.double() / len(dataloader)
+            epoch_loss = running_loss / len(dataloader.dataset)
+            epoch_acc = running_corrects.double() / len(dataloader.dataset)
+            print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
 
-            print(f'{phase} Loss: {epoch_loss:.4f}, {type(epoch_loss)}\n      Acc: {epoch_acc:.4f}, {type(epoch_acc)}')
-
-            # update loss and accuracy lists and save the plots
+            # update loss and accuracy lists for plots
             if phase == 'train':
                 train_loss.append(epoch_loss)
                 train_acc.append(epoch_acc.cpu().numpy())
-                loss_ax.plot(train_loss, color='blue')
-                loss_ax.set_xlabel('epochs')
-                loss_ax.set_ylabel('train loss')
-                acc_ax.plot(train_acc, color='red')
-                acc_ax.set_xlabel('epochs')
-                acc_ax.set_ylabel('train accuracy')
-                fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")
-                fig_2.savefig(f"{SAVE_PLOTS_PATH}/{phase}_acc_plot.png")
-                print(f"{phase} PLOTS SAVED!")
             else:
                 val_loss.append(epoch_loss)
                 val_acc.append(epoch_acc.cpu().numpy())
-                loss_ax.plot(val_loss, color='blue')
-                loss_ax.set_xlabel('epochs')
-                loss_ax.set_ylabel('validation loss')
-                acc_ax.plot(val_acc, color='red')
-                acc_ax.set_xlabel('epochs')
-                acc_ax.set_ylabel('validation accuracy')
-                fig_1.savefig(f"{SAVE_PLOTS_PATH}/{phase}_loss_plot.png")
-                fig_2.savefig(f"{SAVE_PLOTS_PATH}/{phase}_acc_plot.png")
-                print(f"{phase} PLOTS SAVED!")
 
             # deep copy and save the best model
             if phase == 'val' and epoch_acc > best_acc:
@@ -114,8 +92,25 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
                 torch.save(best_model_wts, f"{SAVE_MODEL_PATH}/{CLASS_NAME}_classification_model.pth")
                 print("MODEL SAVED!")
 
+        # create two subplots: for loss and for accuracy
+        fig_1, loss_ax = plt.subplots()
+        loss_ax.plot(train_loss, color='blue', label='train', marker='o')
+        loss_ax.plot(val_loss, color='red', label='val', marker='o')
+        loss_ax.set_xlabel('epochs')
+        loss_ax.set_ylabel('loss')
+
+        fig_2, acc_ax = plt.subplots()
+        acc_ax.plot(train_acc, color='blue', label='train', marker='o')
+        acc_ax.plot(val_acc, color='red', label='val', marker='o')
+        acc_ax.set_xlabel('epochs')
+        acc_ax.set_ylabel('accuracy')
+
+        fig_1.savefig(f"{SAVE_PLOTS_PATH}/loss_plot.png")
+        fig_2.savefig(f"{SAVE_PLOTS_PATH}/acc_plot.png")
+        print(f"PLOTS SAVED!")
+
         time_epoch = time.time() - start_epoch
-        print(f"\nEpoch [{epoch + 1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
+        print(f"\nEpoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
         plt.close('all')
 
     time_training = time.time() - since
@@ -141,3 +136,4 @@ if __name__ == '__main__':
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
     # train the model
     trained_model = train_model(model, criterion, optimizer, exp_lr_scheduler, num_epochs=NUM_EPOCHS)
+

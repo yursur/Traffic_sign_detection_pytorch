@@ -30,8 +30,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
 
     for epoch in range(num_epochs):
         start_epoch = time.time()
-        print(f'Epoch {epoch}/{num_epochs - 1}')
         print('-' * 10)
+        print(f'Epoch {epoch+1}/{num_epochs}')
 
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
@@ -110,11 +110,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
         print(f"PLOTS SAVED!")
 
         time_epoch = time.time() - start_epoch
-        print(f"\nEpoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
+        print(f"Epoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
+        print('-' * 10)
         plt.close('all')
 
     time_training = time.time() - since
-    print(f'Training complete in {time_training // 60:.0f}m {time_training % 60:.0f}s')
+    print(f'\nTraining complete in {time_training // 60:.0f}m {time_training % 60:.0f}s')
     print(f'Best val Acc: {best_acc:4f}')
 
     # load best model weights

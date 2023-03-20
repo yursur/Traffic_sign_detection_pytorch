@@ -52,8 +52,6 @@ class ClassificationDataset(Dataset):
             self.images_path = os.path.join(root_dataset, 'test', class_name)
             gt = pd.read_csv(os.path.join(root_dataset, 'test', 'gt_test_' + class_name + '.csv'))
 
-        self.num_to_cl_df = pd.read_csv(os.path.join(root_dataset, class_name + '_num_to_labels.csv'))
-
         # extract images and labels of current subclass
         self.imgs = os.listdir(self.images_path)
         self.labels = gt.label.to_list()

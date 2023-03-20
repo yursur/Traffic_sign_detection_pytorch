@@ -7,16 +7,14 @@ from config import CLASS_NAME, BATCH_SIZE, DATASETS_PATH
 
 # Transformations for datasets
 data_transforms = {
-    'train': T.Compose([
-        T.Resize(size=(225, 225)),
-        T.ToTensor(),
-        T.Normalize(mean=[0.3677, 0.3948, 0.4517], std=[0.2350, 0.2200, 0.2068])
-    ]),
-    'val': T.Compose([
-        T.Resize(size=(225, 225)),
-        T.ToTensor(),
-        T.Normalize(mean=[0.3677, 0.3948, 0.4517], std=[0.2350, 0.2200, 0.2068])
-    ])
+    'train': T.Compose([T.Resize(size=(225, 225)),
+                        T.ToTensor(),
+                        T.Normalize(mean=[0.3677, 0.3948, 0.4517], std=[0.2350, 0.2200, 0.2068])
+                        ]),
+    'val': T.Compose([T.Resize(size=(225, 225)),
+                      T.ToTensor(),
+                      T.Normalize(mean=[0.3677, 0.3948, 0.4517], std=[0.2350, 0.2200, 0.2068])
+                      ])
 }
 
 # Creating classification train and test datasets

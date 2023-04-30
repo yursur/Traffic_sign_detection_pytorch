@@ -52,9 +52,9 @@ class ClassificationDataset(Dataset):
             self.images_path = os.path.join(root_dataset, 'test', class_name)
             gt = pd.read_csv(os.path.join(root_dataset, 'test', 'gt_test_' + class_name + '.csv'))
 
-        # extract images and labels of current subclass
-        self.imgs = os.listdir(self.images_path)
-        self.labels = gt.label.to_list()
+        # extract images and labels
+        self.imgs = gt.filename
+        self.labels = gt.label
         self.train = train
         self.transform = transform
 
@@ -63,7 +63,6 @@ class ClassificationDataset(Dataset):
         img_path = os.path.join(self.images_path, self.imgs[idx])
         img = Image.open(img_path).convert("RGB")
         label = self.labels[idx]
-
         if self.transform:
             img = self.transform(img)
 

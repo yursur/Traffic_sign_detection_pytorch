@@ -30,8 +30,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
 
     for epoch in range(num_epochs):
         start_epoch = time.time()
-        print(f'Epoch {epoch}/{num_epochs - 1}')
         print('-' * 10)
+        print(f'Epoch [{epoch+1}/{num_epochs}]')
 
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
@@ -44,7 +44,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
 
             running_loss = 0.0
             running_corrects = 0
-
 
             # Iterate over data.
             for batch_id, (inputs, labels) in enumerate(dataloader):
@@ -98,23 +97,25 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs):
         loss_ax.plot(val_loss, color='red', label='val', marker='o')
         loss_ax.set_xlabel('epochs')
         loss_ax.set_ylabel('loss')
+        loss_ax.legend()
 
         fig_2, acc_ax = plt.subplots()
         acc_ax.plot(train_acc, color='blue', label='train', marker='o')
         acc_ax.plot(val_acc, color='red', label='val', marker='o')
         acc_ax.set_xlabel('epochs')
         acc_ax.set_ylabel('accuracy')
+        acc_ax.legend()
 
         fig_1.savefig(f"{SAVE_PLOTS_PATH}/loss_plot.png")
         fig_2.savefig(f"{SAVE_PLOTS_PATH}/acc_plot.png")
         print(f"PLOTS SAVED!")
 
         time_epoch = time.time() - start_epoch
-        print(f"\nEpoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s\n")
+        print(f"Epoch [{epoch+1}/{num_epochs}] completed in {time_epoch // 60:.0f}m {time_epoch % 60:.0f}s")
         plt.close('all')
 
     time_training = time.time() - since
-    print(f'Training complete in {time_training // 60:.0f}m {time_training % 60:.0f}s')
+    print(f'\nTraining complete in {time_training // 60:.0f}m {time_training % 60:.0f}s')
     print(f'Best val Acc: {best_acc:4f}')
 
     # load best model weights
@@ -132,8 +133,8 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     # define the OPTIMIZER
     optimizer = optim.SGD(params, lr=0.001, momentum=0.9)
-    # decay LR by a factor of 0.1 every 7 epochs
-    exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+    # decay LR by a factor of 'gamma' every 'step_size' epochs
+    exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
     # train the model
     trained_model = train_model(model, criterion, optimizer, exp_lr_scheduler, num_epochs=NUM_EPOCHS)
 

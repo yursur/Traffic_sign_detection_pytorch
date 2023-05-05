@@ -36,15 +36,21 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=BATCH_SIZE)
 
-print(f"Number of samples in {CLASS_NAME} train dataset: {len(train_dataset)}")
-print(f"Number of samples in {CLASS_NAME} test dataset: {len(test_dataset)}")
+print(f"Number of samples in {CLASS_NAME} train dataset: {len(train_dataset.imgs)}/{len(train_dataset.labels)}")
+print(f"Number of samples in {CLASS_NAME} test dataset: {len(test_dataset.imgs)}/{len(test_dataset.labels)}")
 
-# mean and std calculating for normalize
-# def mean_std(loader):
-#   images, labels = next(iter(loader))
-#   # shape of images = [b,c,w,h]
-#   mean, std = images.mean([0,2,3]), images.std([0,2,3])
-#   return mean, std
-#
-# mean, std = mean_std(train_loader)
-# print("mean and std: \n", mean, std)
+def mean_std(loader):
+    images, labels = next(iter(loader))
+    # shape of images = [b,c,w,h]
+    mean, std = images.mean([0, 2, 3]), images.std([0, 2, 3])
+    return mean, std
+
+
+if __name__ == '__main__':
+    # creating full dataset for calculating of mean and std for normalize
+    full_dataset = torch.utils.data.ConcatDataset([train_dataset,test_dataset])
+    print(f"Number of samples in full test dataset: {len(full_dataset)}")
+    full_loader = torch.utils.data.DataLoader(dataset=full_dataset, batch_size=1)
+    # calculating of mean and std
+    mean, std = mean_std(full_loader)
+    print("mean and std: \n", mean, std)

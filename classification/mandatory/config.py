@@ -14,12 +14,12 @@ NUM_EPOCHS = 25
 BATCH_SIZE = 30
 
 # PATHS
-# SAVE_MODEL_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/mandatory/output/models"
-# SAVE_PLOTS_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/mandatory/output/plots"
-# DATASETS_PATH = "C:/Users/yuras/Projects/Signs/data/classification/rtsd-r3"
-# INFERENCE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
+SAVE_MODEL_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/mandatory/output/models"
+SAVE_PLOTS_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/classification/mandatory/output/plots"
+DATASETS_PATH = "C:/Users/yuras/Projects/Signs/data/classification/rtsd-r3"
+INFERENCE_IMAGE_PATH = "C:/Users/yuras/Projects/Traffic_sign_detection_pytorch/input/inference"
 
 # PATHS FOR TRAINING IN GOOGLE COLAB NOTEBOOK
-SAVE_MODEL_PATH = "/content/drive/MyDrive/classification/mandatory/output/models"
-SAVE_PLOTS_PATH = "/content/drive/MyDrive/classification/mandatory/output/plots"
-DATASETS_PATH = "/content/drive/MyDrive/classification/rtsd-r3"
+# SAVE_MODEL_PATH = "/content/drive/MyDrive/classification/mandatory/output/models"
+# SAVE_PLOTS_PATH = "/content/drive/MyDrive/classification/mandatory/output/plots"
+# DATASETS_PATH = "/content/drive/MyDrive/classification/rtsd-r3"
